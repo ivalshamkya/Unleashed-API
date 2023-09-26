@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @db.VarChar(100)
+  username   String   @db.VarChar(100)
+  password   String   @db.VarChar(255)
+  phone      String   @db.VarChar(20)
+  imgProfile String?  @db.VarChar(255)
+  isVerified Int      @default(0) @db.Int
+  created_at DateTime @default(now()) @db.DateTime
+  updated_at DateTime @updatedAt @db.DateTime
+  token      String?  @db.VarChar(500)
+  blogs      Blog[]   @relation("userBlogs")
+  likes      Like[]   @relation("userLikes")
+
+  @@map("users")
+}
+
+model Categories {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(100)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  blogs Blog[] @relation("categoryBlogs")
+
+  @@map("categories")
+}
+
+model Blog {
+  id            Int            @id @default(autoincrement())
+  title         String
+  imageURL      String
+  content       String         @db.Text()
+  videoURL      String?
+  country       String
+  isPublished   Boolean
+  isDeleted     Boolean
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  UserId        Int
+  CategoryId    Int
+  User          User           @relation("userBlogs", fields: [UserId], references: [id])
+  Category      Categories     @relation("categoryBlogs", fields: [CategoryId], references: [id])
+  Blog_Keywords Blog_Keyword[]
+  Likes         Like[]         @relation("blogLikes")
+
+  @@map("blogs")
+}
+
+model Blog_Keyword {
+  id        Int      @id @default(autoincrement())
+  BlogId    Int
+  KeywordId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Blog      Blog     @relation(fields: [BlogId], references: [id])
+  Keyword   Keyword  @relation(fields: [KeywordId], references: [id])
+
+  @@map("blog_keyword")
+}
+
+model Keyword {
+  id        Int            @id @default(autoincrement())
+  name      String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  blogs     Blog_Keyword[]
+
+  @@map("keyword")
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  UserId    Int
+  BlogId    Int
+  User      User     @relation("userLikes", fields: [UserId], references: [id])
+  Blog      Blog     @relation("blogLikes", fields: [BlogId], references: [id])
+
+  @@map("like")
+}

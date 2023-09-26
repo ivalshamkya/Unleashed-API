@@ -1,0 +1,41 @@
+{
+  "name": "be",
+  "version": "1.0.0",
+  "description": "Blog",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest -i --testTimeout=30000"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.3",
+    "uuid": "^9.0.0",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.7",
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.2",
+    "@types/supertest": "^2.0.12",
+    "@types/uuid": "^9.0.2",
+    "babel-jest": "^29.6.1",
+    "jest": "^29.6.1",
+    "prisma": "^4.16.2",
+    "supertest": "^6.3.3"
+  }
+}
